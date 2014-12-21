@@ -221,7 +221,7 @@ function preberiMeritveVitalnihZnakov() {
     						"t/data[at0002]/events[at0003]/data[at0001]/items[at0004]/value/units as pulz_enota " +
 						"from EHR e[e/ehr_id/value='" + ehrId + "'] " +
 						"contains OBSERVATION t[openEHR-EHR-OBSERVATION.heart_rate-pulse.v1] " +
-						"where t/data[at0002]/events[at0003]/data[at0001]/items[at0004]/value/magnitude<180 " +
+						"where t/data[at0002]/events[at0003]/data[at0001]/items[at0004]/value/magnitude>180 " +
 						"order by t/data[at0002]/events[at0003]/time/value desc " +
 						"limit 100";
 					$.ajax({
@@ -229,7 +229,7 @@ function preberiMeritveVitalnihZnakov() {
 					    type: 'GET',
 					    headers: {"Ehr-Session": sessionId},
 					    success: function (res) {
-					    	var results = "<table class='table table-striped table-hover'><tr><th>Datum in ura</th><th class='text-right'>Telesna temperatura</th></tr>";
+					    	var results = "<table class='table table-striped table-hover'><tr><th>Datum in ura</th><th class='text-right'>Pulz</th></tr>";
 					    	if (res) {
 					    		var rows = res.resultSet;
 						        for (var i in rows) {
