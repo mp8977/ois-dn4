@@ -107,13 +107,13 @@ function dodajMeritveVitalnihZnakov() {
 	
 	if(ehrId=="681307ab-41c7-4856-b8f9-67df9e29fbed"){ //tekac10
 		dist = 10;
-		time = 33 + (Math.random()*60);
+		time = Math.floor(33 + (Math.random()*60));
 	}else if(ehrId=="b1a8c471-3b65-4918-81cf-00ea998b7a91"){ //tekac21
 		dist = 21;
-		time = 70 + (Math.random()*120);
+		time = Math.floor(70 + (Math.random()*120));
 	}else{ //tekac42 in ostali
 		dist = 42;
-		time = 140 + (Math.random()*210);
+		time = Math.floor(140 + (Math.random()*210));
 	}
 	
 	for(var i=0;i<=time;i++){
@@ -173,16 +173,16 @@ function dodajMeritveVitalnihZnakov() {
 				stevec -= 2;
 			}
 		else{
-			if(pulz < 120) pulz += (7+(Math.random()*15)); 
-			else if(pulz >= 120 && pulz < 160) pulz += (3+(Math.random()*8));
+			if(pulz < 120) pulz += Math.floor(7+(Math.random()*15)); 
+			else if(pulz >= 120 && pulz < 160) pulz += Math.floor(3+(Math.random()*8));
 			else if(pulz >= 160 && pulz < 180){
-				r = (0+(Math.random()*4));
-				if(r==0) pulz -= (0+(Math.random()*2));
-				else pulz += (4+(Math.random()*6));
+				r = Math.floor(0+(Math.random()*4));
+				if(r==0) pulz -= Math.floor(0+(Math.random()*2));
+				else pulz += Math.floor(4+(Math.random()*6));
 				r = 1;
 			}
 			else if(pulz >=180 && pulz < 200){
-				r = (0+(Math.random()*10));
+				r = Math.floor(0+(Math.random()*10));
 				if(r==0) pulz += 5;
 				else pulz -= 10;
 				r = 1;
