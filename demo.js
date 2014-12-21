@@ -272,8 +272,7 @@ $(document).ready(function() {
 	});
 	$('#preberiObstojeciVitalniZnak').change(function() {
 		$("#dodajMeritveVitalnihZnakovSporocilo").html("");
-		var podatki = $(this).val();
-		$("#dodajVitalnoEHR").val(podatki[0]);
+		$("#dodajVitalnoEHR").val($(this).val());
 	});
 	$('#preberiEhrIdZaVitalneZnake').change(function() {
 		$("#preberiMeritveVitalnihZnakovSporocilo").html("");
