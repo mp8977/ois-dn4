@@ -60,6 +60,7 @@
 					<div class="panel-body">
 						<span class="label label-default">EHR ID</span><input id="dodajVitalnoEHR" type="text" class="form-control input-mini" placeholder="7b661e12-3a98-21ad-c29e-2dc9f5a3d885">
 						<button type="button" class="btn btn-primary btn-xs" onclick="dodajMeritveVitalnihZnakov()">Dodaj meritve vitalnih znakov</button><span id="dodajMeritveVitalnihZnakovSporocilo"></span>
+						<!--graf pulzov po minuti-->
 				  	</div>
 				</div>
 			</div>	
@@ -68,8 +69,8 @@
 					<div class="panel-heading">
 						<div class="row">
 							<div class="col-lg-6 col-md-6 col-sm-6"><b>Pregled</b> meritev <b>vitalnih znakov</b> bolnika</div>
-							<div class="col-lg-3 col-md-3 col-sm-3"><select class="form-control input-sm" id="preberiTipZaVitalneZnake"><option value="telesna temperatura">telesna temperatura</option><option value="telesna temperatura AQL">telesna temperatura (filter na podhladitev)</option><option value="telesna teža">telesna teža</option></select></div>
-							<div class="col-lg-3 col-md-3 col-sm-3"><select class="form-control input-sm" id="preberiEhrIdZaVitalneZnake"><option value=""></option><option value="b931580f-2b05-488b-985b-8d9ffb08ad02">Ata Smrk</option><option value="d564c6a3-5a43-4fcc-bfa7-9ac76e9673bd">Pujsa Pepa</option></select></div>
+							<div class="col-lg-3 col-md-3 col-sm-3"><select class="form-control input-sm" id="preberiTipZaVitalneZnake"><option value="pulz AQL">pulz (filter na anaerobno)</option></select></div>
+							<div class="col-lg-3 col-md-3 col-sm-3"><select class="form-control input-sm" id="preberiEhrIdZaVitalneZnake"><option value=""></option><option value="681307ab-41c7-4856-b8f9-67df9e29fbed">Tekac10</option><option value="b1a8c471-3b65-4918-81cf-00ea998b7a91">Tekac21</option><option value="85695f73-3b1d-4cb5-a20e-d2090634e56d">Tekac42</option></select></div>
 						</div>
 					</div>				
 					<div class="panel-body">
