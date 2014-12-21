@@ -93,54 +93,106 @@ function dodajMeritveVitalnihZnakov() {
 	sessionId = getSessionId();
 
 	var ehrId = $("#dodajVitalnoEHR").val();
-	var datumInUra = $("#dodajVitalnoDatumInUra").val();
-	var telesnaVisina = $("#dodajVitalnoTelesnaVisina").val();
-	var telesnaTeza = $("#dodajVitalnoTelesnaTeza").val();
-	var telesnaTemperatura = $("#dodajVitalnoTelesnaTemperatura").val();
-	var sistolicniKrvniTlak = $("#dodajVitalnoKrvniTlakSistolicni").val();
-	var diastolicniKrvniTlak = $("#dodajVitalnoKrvniTlakDiastolicni").val();
-	var nasicenostKrviSKisikom = $("#dodajVitalnoNasicenostKrviSKisikom").val();
-	var merilec = $("#dodajVitalnoMerilec").val();
+	var datumInUra;
+	var pulz = 70;
+	var merilec = "xx";
+	var tt = "2014-10-06T0";
+	
+	var dist;
+	var time;
+	var r = 1;
+	var stevec = 0;
+	var h = 0;
+	var m = 0;
+	
+	if(ehrId=="681307ab-41c7-4856-b8f9-67df9e29fbed"){ //tekac10
+		dist = 10;
+		time = 33 + (Math.random()*60);
+	}else if(ehrId=="b1a8c471-3b65-4918-81cf-00ea998b7a91"){ //tekac21
+		dist = 21;
+		time = 70 + (Math.random()*120);
+	}else{ //tekac42 in ostali
+		dist = 42;
+		time = 140 + (Math.random()*210);
+	}
+	
+	for(var i=0;i<=time;i++){
+		
+		//sestavljanje datumInUra:
+		if(m<10){
+			datumInUra = tt + h + ":0" + m;
+		}if(m>=10 && m<60){
+			datumInUra = tt + h + ":" + m;
+		}else{
+			h += 1;
+			m = 0;
+			datumInUra = tt + h + ":00";
+		}
+		m += 1;
+		
 
-	if (!ehrId || ehrId.trim().length == 0) {
-		$("#dodajMeritveVitalnihZnakovSporocilo").html("<span class='obvestilo label label-warning fade-in'>Prosim vnesite zahtevane podatke!</span>");
-	} else {
-		$.ajaxSetup({
-		    headers: {"Ehr-Session": sessionId}
-		});
-		var podatki = {
-			// Preview Structure: https://rest.ehrscape.com/rest/v1/template/Vital%20Signs/example
-		    "ctx/language": "en",
-		    "ctx/territory": "SI",
-		    "ctx/time": datumInUra,
-		    "vital_signs/height_length/any_event/body_height_length": telesnaVisina,
-		    "vital_signs/body_weight/any_event/body_weight": telesnaTeza,
-		   	"vital_signs/body_temperature/any_event/temperature|magnitude": telesnaTemperatura,
-		    "vital_signs/body_temperature/any_event/temperature|unit": "°C",
-		    "vital_signs/blood_pressure/any_event/systolic": sistolicniKrvniTlak,
-		    "vital_signs/blood_pressure/any_event/diastolic": diastolicniKrvniTlak,
-		    "vital_signs/indirect_oximetry:0/spo2|numerator": nasicenostKrviSKisikom
-		};
-		var parametriZahteve = {
-		    "ehrId": ehrId,
-		    templateId: 'Vital Signs',
-		    format: 'FLAT',
-		    committer: merilec
-		};
-		$.ajax({
-		    url: baseUrl + "/composition?" + $.param(parametriZahteve),
-		    type: 'POST',
-		    contentType: 'application/json',
-		    data: JSON.stringify(podatki),
-		    success: function (res) {
-		    	console.log(res.meta.href);
-		        $("#dodajMeritveVitalnihZnakovSporocilo").html("<span class='obvestilo label label-success fade-in'>" + res.meta.href + ".</span>");
-		    },
-		    error: function(err) {
-		    	$("#dodajMeritveVitalnihZnakovSporocilo").html("<span class='obvestilo label label-danger fade-in'>Napaka '" + JSON.parse(err.responseText).userMessage + "'!");
-				console.log(JSON.parse(err.responseText).userMessage);
-		    }
-		});
+		if (!ehrId || ehrId.trim().length == 0) {
+			$("#dodajMeritveVitalnihZnakovSporocilo").html("<span class='obvestilo label label-warning fade-in'>Prosim vnesite zahtevane podatke!</span>");
+			break;
+		} else {
+			$.ajaxSetup({
+			    headers: {"Ehr-Session": sessionId}
+			});
+			var podatki = {
+				// Preview Structure: https://rest.ehrscape.com/rest/v1/template/Vital%20Signs/example
+			    "ctx/language": "en",
+			    "ctx/territory": "SI",
+			    "ctx/time": datumInUra,
+			   	"vital_signs/pulse:0/any_event:0/rate|magnitude": pulz,
+			   	"vital_signs/pulse:0/any_event:0/rate|unit":"/min"
+			};
+			var parametriZahteve = {
+			    "ehrId": ehrId,
+			    templateId: 'Vital Signs',
+			    format: 'FLAT',
+			    committer: merilec
+			};
+			$.ajax({
+			    url: baseUrl + "/composition?" + $.param(parametriZahteve),
+			    type: 'POST',
+			    contentType: 'application/json',
+			    data: JSON.stringify(podatki),
+			    success: function (res) {
+			    	console.log(res.meta.href);
+			        $("#dodajMeritveVitalnihZnakovSporocilo").html("<span class='obvestilo label label-success fade-in'>" + res.meta.href + ".</span>");
+			    },
+			    error: function(err) {
+			    	$("#dodajMeritveVitalnihZnakovSporocilo").html("<span class='obvestilo label label-danger fade-in'>Napaka '" + JSON.parse(err.responseText).userMessage + "'!");
+					console.log(JSON.parse(err.responseText).userMessage);
+			    }
+			});
+		}
+		
+		if((r==0 && pulz > 140) || stevec>15){
+				pulz -= 10;
+				stevec -= 2;
+			}
+		else{
+			if(pulz < 120) pulz += (7+(Math.random()*15)); 
+			else if(pulz >= 120 && pulz < 160) pulz += (3+(Math.random()*8));
+			else if(pulz >= 160 && pulz < 180){
+				r = (0+(Math.random()*4));
+				if(r==0) pulz -= (0+(Math.random()*2));
+				else pulz += (4+(Math.random()*6));
+				r = 1;
+			}
+			else if(pulz >=180 && pulz < 200){
+				r = (0+(Math.random()*10));
+				if(r==0) pulz += 5;
+				else pulz -= 10;
+				r = 1;
+				stevec ++;
+			}
+			else if(pulz >= 200){
+				pulz -= 10;
+				r = 0;
+			}
+		}
 	}
 }
 
@@ -264,16 +316,8 @@ $(document).ready(function() {
 	});
 	$('#preberiObstojeciVitalniZnak').change(function() {
 		$("#dodajMeritveVitalnihZnakovSporocilo").html("");
-		var podatki = $(this).val().split("|");
+		var podatki = $(this).val();
 		$("#dodajVitalnoEHR").val(podatki[0]);
-		$("#dodajVitalnoDatumInUra").val(podatki[1]);
-		$("#dodajVitalnoTelesnaVisina").val(podatki[2]);
-		$("#dodajVitalnoTelesnaTeza").val(podatki[3]);
-		$("#dodajVitalnoTelesnaTemperatura").val(podatki[4]);
-		$("#dodajVitalnoKrvniTlakSistolicni").val(podatki[5]);
-		$("#dodajVitalnoKrvniTlakDiastolicni").val(podatki[6]);
-		$("#dodajVitalnoNasicenostKrviSKisikom").val(podatki[7]);
-		$("#dodajVitalnoMerilec").val(podatki[8]);
 	});
 	$('#preberiEhrIdZaVitalneZnake').change(function() {
 		$("#preberiMeritveVitalnihZnakovSporocilo").html("");
